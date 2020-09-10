@@ -3,12 +3,15 @@ package com.androidkotlin.mynotes.ui.main
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.androidkotlin.mynotes.Note
+import com.androidkotlin.mynotes.model.Note
 import com.androidkotlin.mynotes.R
+import com.androidkotlin.mynotes.model.Color
 import kotlinx.android.synthetic.main.item_note.view.*
 
-class NotesRVA : RecyclerView.Adapter<NotesRVA.NotesVH>() {
+class NotesRVA(val onItemClick: ((Note) -> Unit)? = null) : RecyclerView.Adapter<NotesRVA.NotesVH>() {
 
     var notes: List<Note> = listOf()
         set(value) {
@@ -23,11 +26,26 @@ class NotesRVA : RecyclerView.Adapter<NotesRVA.NotesVH>() {
 
     override fun onBindViewHolder(holder: NotesVH, position: Int) = holder.bind(notes[position])
 
-    class NotesVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(note: Note) = with(itemView) {
+    inner class NotesVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        fun bind(note: Note) = with(itemView as CardView) {
             note_title.text = note.title
             note_body.text = note.text
-            setBackgroundColor(note.color)
+
+            val color = when (note.color) {
+                Color.WHITE -> R.color.white
+                Color.VIOLET -> R.color.violet
+                Color.YELLOW -> R.color.yello
+                Color.RED -> R.color.red
+                Color.PINK -> R.color.pink
+                Color.GREEN -> R.color.green
+                Color.BLUE -> R.color.blue
+            }
+
+            setBackgroundColor(ContextCompat.getColor(itemView.context,color))
+
+            itemView.setOnClickListener {
+                onItemClick?.invoke(note)
+            }
         }
     }
 

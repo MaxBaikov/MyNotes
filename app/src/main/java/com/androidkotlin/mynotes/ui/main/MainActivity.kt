@@ -1,13 +1,12 @@
 package com.androidkotlin.mynotes.ui.main
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import com.androidkotlin.mynotes.R
+import com.androidkotlin.mynotes.ui.note.NoteActivity
+import com.androidkotlin.mynotes.viewmodel.main.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -24,13 +23,18 @@ class MainActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         rv_notes.layoutManager = GridLayoutManager(this, 2)
-        //TODO - почему не работает скругление углов на карточке
-        adapter = NotesRVA()
+        adapter = NotesRVA{
+            NoteActivity.start(this, it)
+        }
         rv_notes.adapter = adapter
 
         viewModel.getViewState().observe(this, { t ->
             t?.let { adapter.notes = it.notes }
         })
+
+        fab.setOnClickListener{
+            NoteActivity.start(this)
+        }
     }
 }
 
