@@ -66,8 +66,9 @@ object Repository {
                 notes[i] = note
                 return
             }
-            notes.add(note)
+
         }
+        notes.add(note)
     }
 
 }
