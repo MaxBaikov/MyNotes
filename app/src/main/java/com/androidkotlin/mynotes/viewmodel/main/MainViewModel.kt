@@ -1,16 +1,18 @@
-package com.androidkotlin.mynotes.ui.main
+package com.androidkotlin.mynotes.viewmodel.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.androidkotlin.mynotes.Repository
+import com.androidkotlin.mynotes.model.Repository
 
 class MainViewModel : ViewModel() {
 
     private val viewStateLiveData = MutableLiveData<MainViewState>()
 
     init {
-        viewStateLiveData.value = MainViewState(Repository.notes)
+        Repository.getNotes().observeForever{
+            viewStateLiveData.value  = viewStateLiveData.value?.copy(notes = it) ?: MainViewState(it)
+        }
     }
 
     fun getViewState(): LiveData<MainViewState> = viewStateLiveData
