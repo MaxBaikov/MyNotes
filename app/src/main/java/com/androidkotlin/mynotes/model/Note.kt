@@ -3,12 +3,14 @@ package com.androidkotlin.mynotes.model
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 import java.util.*
+import kotlin.random.Random
+
 
 @Parcelize
 data class Note(val id: String,
                 val title: String = "",
                 val text: String = "",
-                val color: Color = Color.WHITE,
+                val color: Color = Color.random(),
                 val lastChanged: Date = Date()): Parcelable {
 
     override fun equals(other: Any?): Boolean {
@@ -34,5 +36,9 @@ enum class Color {
     BLUE,
     RED,
     VIOLET,
-    PINK
+    PINK;
+
+    companion object {
+        fun random() = values()[Random.nextInt(values().size)]
+    }
 }
