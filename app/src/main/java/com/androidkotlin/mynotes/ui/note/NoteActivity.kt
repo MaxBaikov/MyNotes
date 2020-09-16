@@ -10,14 +10,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.ViewModelProvider
 import com.androidkotlin.mynotes.R
-import com.androidkotlin.mynotes.model.Color
-import com.androidkotlin.mynotes.model.Note
+import com.androidkotlin.mynotes.data.model.Color
+import com.androidkotlin.mynotes.data.model.Note
+import com.androidkotlin.mynotes.ui.base.BaseActivity
 import com.androidkotlin.mynotes.viewmodel.note.NoteViewModel
+import com.androidkotlin.mynotes.viewmodel.note.NoteViewState
 import kotlinx.android.synthetic.main.activity_note.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class NoteActivity : AppCompatActivity() {
+class NoteActivity : BaseActivity<Note?, NoteViewState>() {
 
     companion object {
         //        private val EXTRA_NOTE = NoteActivity::class.java.name + "extra.NOTE"
@@ -25,48 +27,58 @@ class NoteActivity : AppCompatActivity() {
         private const val DATE_FORMAT = "dd.MM.yy HH:mm"
 
 
-        fun start(context: Context, note: Note? = null) =
+        fun start(context: Context, noteId: String? = null) =
             Intent(context, NoteActivity::class.java).apply {
-                putExtra(NOTE_KEY, note)
+                putExtra(NOTE_KEY, noteId)
                 context.startActivity(this)
             }
 
     }
 
+    override val layoutRes: Int = R.layout.activity_note
     private var note: Note? = null
-    lateinit var viewModel: NoteViewModel
+    override val viewModel by lazy {
+        ViewModelProvider(this).get(NoteViewModel::class.java)
+    }
 
-    private val textWatcher = object : TextWatcher {
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
+    val textWatcher = object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {
             saveNote()
         }
-
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_note)
-
-        note = intent.getParcelableExtra(NOTE_KEY)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        viewModel = ViewModelProvider(this).get(NoteViewModel::class.java)
+        val noteId = intent.getStringExtra(NOTE_KEY)
 
+        noteId?.let {
+            viewModel.loadNote(it)
+        } ?: let {
+            supportActionBar?.title = getString(R.string.new_note)
+            initView()
+        }
+    }
+
+    override fun renderData(data: Note?) {
+        this.note = data
         supportActionBar?.title = note?.let {
             SimpleDateFormat(DATE_FORMAT, Locale.getDefault()).format(it.lastChanged)
         } ?: getString(R.string.new_note)
         initView()
-
     }
 
     private fun initView() {
+        et_title.removeTextChangedListener(textWatcher)
+        et_body.removeTextChangedListener(textWatcher)
+
         note?.let {
-            et_title.setText(it.title)
-            et_body.setText(it.text)
+            et_title.setTextKeepState(it.title)
+            et_body.setTextKeepState(it.text)
             val color = when (it.color) {
                 Color.WHITE -> R.color.white
                 Color.VIOLET -> R.color.violet

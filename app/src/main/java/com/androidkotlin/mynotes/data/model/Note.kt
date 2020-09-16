@@ -1,4 +1,4 @@
-package com.androidkotlin.mynotes.model
+package com.androidkotlin.mynotes.data.model
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
@@ -7,11 +7,12 @@ import kotlin.random.Random
 
 
 @Parcelize
-data class Note(val id: String,
+data class Note(val id: String = "",
                 val title: String = "",
                 val text: String = "",
                 val color: Color = Color.random(),
-                val lastChanged: Date = Date()): Parcelable {
+                val lastChanged: Date = Date()
+): Parcelable {
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
