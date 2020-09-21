@@ -15,7 +15,7 @@ import com.firebase.ui.auth.AuthUI
 abstract class BaseActivity<T, S : BaseViewState<T>> : AppCompatActivity() {
 
     companion object {
-        private const val RC_SIGN_IN = 123654
+        private const val RC_SIGN_IN = 123
     }
 
     abstract val viewModel: BaseViewModel<T, S>
