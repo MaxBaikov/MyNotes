@@ -6,15 +6,12 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.MenuItem
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.ViewModelProvider
 import com.androidkotlin.mynotes.R
-import com.androidkotlin.mynotes.data.model.Color
-import com.androidkotlin.mynotes.data.model.Note
+import com.androidkotlin.mynotes.data.entity.Color
+import com.androidkotlin.mynotes.data.entity.Note
 import com.androidkotlin.mynotes.ui.base.BaseActivity
-import com.androidkotlin.mynotes.viewmodel.note.NoteViewModel
-import com.androidkotlin.mynotes.viewmodel.note.NoteViewState
 import kotlinx.android.synthetic.main.activity_note.*
 import java.text.SimpleDateFormat
 import java.util.*

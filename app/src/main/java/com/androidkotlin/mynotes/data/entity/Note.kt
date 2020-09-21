@@ -1,4 +1,4 @@
-package com.androidkotlin.mynotes.data.model
+package com.androidkotlin.mynotes.data.entity
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

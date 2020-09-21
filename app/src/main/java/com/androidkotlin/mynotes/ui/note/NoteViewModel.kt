@@ -1,9 +1,9 @@
-package com.androidkotlin.mynotes.viewmodel.note
+package com.androidkotlin.mynotes.ui.note
 
 import androidx.lifecycle.Observer
-import com.androidkotlin.mynotes.data.model.Note
+import com.androidkotlin.mynotes.data.entity.Note
 import com.androidkotlin.mynotes.data.model.NoteResult
-import com.androidkotlin.mynotes.data.model.NotesRepository
+import com.androidkotlin.mynotes.data.NotesRepository
 import com.androidkotlin.mynotes.ui.base.BaseViewModel
 
 class NoteViewModel : BaseViewModel<Note?, NoteViewState>() {
