@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.androidkotlin.mynotes.data.model.Note
+import com.androidkotlin.mynotes.data.entity.Note
 import com.androidkotlin.mynotes.R
-import com.androidkotlin.mynotes.data.model.Color
+import com.androidkotlin.mynotes.data.entity.Color
 import kotlinx.android.synthetic.main.item_note.view.*
 
 class NotesRVA(val onItemClick: ((Note) -> Unit)? = null) : RecyclerView.Adapter<NotesRVA.NotesVH>() {

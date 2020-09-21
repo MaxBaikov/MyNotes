@@ -1,18 +1,25 @@
 package com.androidkotlin.mynotes.ui.main
 
+
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.androidkotlin.mynotes.R
-import com.androidkotlin.mynotes.data.model.Note
+import com.androidkotlin.mynotes.data.entity.Note
 import com.androidkotlin.mynotes.ui.base.BaseActivity
 import com.androidkotlin.mynotes.ui.note.NoteActivity
-import com.androidkotlin.mynotes.viewmodel.main.MainViewModel
-import com.androidkotlin.mynotes.viewmodel.main.MainViewState
 import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : BaseActivity<List<Note>?, MainViewState>() {
+
+    companion object{
+        fun start(context: Context) = Intent(context, MainActivity::class.java).apply{
+            context.startActivity(this)
+        }
+    }
 
     override val viewModel: MainViewModel by lazy {
         ViewModelProvider(this).get(MainViewModel::class.java)
