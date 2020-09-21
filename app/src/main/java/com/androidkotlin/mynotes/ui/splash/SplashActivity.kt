@@ -1,9 +1,12 @@
 package com.androidkotlin.mynotes.ui.splash
 
+
+import android.os.Handler
 import androidx.lifecycle.ViewModelProvider
 import com.androidkotlin.mynotes.ui.base.BaseActivity
 import com.androidkotlin.mynotes.ui.base.BaseViewModel
 import com.androidkotlin.mynotes.ui.main.MainActivity
+
 
 class SplashActivity : BaseActivity<Boolean?, SplashViewState>() {
 
@@ -15,7 +18,7 @@ class SplashActivity : BaseActivity<Boolean?, SplashViewState>() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.requestUser()
+        Handler().postDelayed({viewModel.requestUser()}, 1000)
     }
 
     override fun renderData(data: Boolean?) {
