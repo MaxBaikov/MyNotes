@@ -6,7 +6,7 @@ import com.androidkotlin.mynotes.data.model.NoteResult
 import com.androidkotlin.mynotes.data.NotesRepository
 import com.androidkotlin.mynotes.ui.base.BaseViewModel
 
-class NoteViewModel : BaseViewModel<Note?, NoteViewState>() {
+class NoteViewModel(val notesRepository: NotesRepository) : BaseViewModel<Note?, NoteViewState>() {
 
     init {
         viewStateLiveData.value = NoteViewState()
@@ -32,7 +32,7 @@ class NoteViewModel : BaseViewModel<Note?, NoteViewState>() {
 
 //TODO убрать обзервер после использования
 
-        val noteLiveData = NotesRepository.getNoteById(noteId)
+        val noteLiveData = notesRepository.getNoteById(noteId)
 
         val observer = object : Observer<NoteResult> {
 
@@ -53,7 +53,7 @@ class NoteViewModel : BaseViewModel<Note?, NoteViewState>() {
 
     override fun onCleared() {
         pendingNote?.let {
-            NotesRepository.saveNote(it)
+            notesRepository.saveNote(it)
         }
     }
 }

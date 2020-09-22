@@ -13,6 +13,7 @@ import com.androidkotlin.mynotes.data.entity.Color
 import com.androidkotlin.mynotes.data.entity.Note
 import com.androidkotlin.mynotes.ui.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_note.*
+import org.koin.android.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -34,9 +35,7 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>() {
 
     override val layoutRes: Int = R.layout.activity_note
     private var note: Note? = null
-    override val viewModel by lazy {
-        ViewModelProvider(this).get(NoteViewModel::class.java)
-    }
+    override val viewModel: NoteViewModel by viewModel()
 
     val textWatcher = object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {
