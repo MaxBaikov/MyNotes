@@ -8,6 +8,7 @@ import com.androidkotlin.mynotes.data.entity.User
 import com.androidkotlin.mynotes.data.errors.NoAuthException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 
 class FirestoreProvider(val firebaseAuth: FirebaseAuth, val store: FirebaseFirestore) : DataProvider {
 
@@ -32,9 +33,9 @@ class FirestoreProvider(val firebaseAuth: FirebaseAuth, val store: FirebaseFires
 
     override fun subscribeToAllNotes(): LiveData<NoteResult> = MutableLiveData<NoteResult>().apply {
         try {
-            notesReference.addSnapshotListener { snapshot, e ->
+            notesReference.orderBy("lastChanged", Query.Direction.DESCENDING).addSnapshotListener { snapshot, e ->
                 e?.let {
-
+//TODO добавить сортировку последний документ сверху - DONE
                 } ?: snapshot?.let {
                     val notes: List<Note> =
                         snapshot.documents.mapNotNull { it.toObject(Note::class.java) }
