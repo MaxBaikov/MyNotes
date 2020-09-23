@@ -4,14 +4,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.cardview.widget.CardView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.androidkotlin.mynotes.data.entity.Note
 import com.androidkotlin.mynotes.R
-import com.androidkotlin.mynotes.data.entity.Color
+import com.androidkotlin.mynotes.extensions.getColorInt
 import kotlinx.android.synthetic.main.item_note.view.*
 
-class NotesRVA(val onItemClick: ((Note) -> Unit)? = null) : RecyclerView.Adapter<NotesRVA.NotesVH>() {
+class NotesRVA(val onItemClick: ((Note) -> Unit)? = null) :
+    RecyclerView.Adapter<NotesRVA.NotesVH>() {
 
     var notes: List<Note> = listOf()
         set(value) {
@@ -31,17 +31,7 @@ class NotesRVA(val onItemClick: ((Note) -> Unit)? = null) : RecyclerView.Adapter
             note_title.text = note.title
             note_body.text = note.text
 
-            val color = when (note.color) {
-                Color.WHITE -> R.color.white
-                Color.VIOLET -> R.color.violet
-                Color.YELLOW -> R.color.yello
-                Color.RED -> R.color.red
-                Color.PINK -> R.color.pink
-                Color.GREEN -> R.color.green
-                Color.BLUE -> R.color.blue
-            }
-
-            setCardBackgroundColor(ContextCompat.getColor(itemView.context,color))
+            setCardBackgroundColor(note.color.getColorInt(context))
 
             itemView.setOnClickListener {
                 onItemClick?.invoke(note)

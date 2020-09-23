@@ -19,7 +19,7 @@ val appModule = module {
 
 }
 
-val splashViewModel = module {
+val splashModel = module {
     viewModel{ SplashViewModel(get()) }
 
 }
