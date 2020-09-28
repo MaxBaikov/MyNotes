@@ -35,6 +35,7 @@ class FirestoreProvider(val firebaseAuth: FirebaseAuth, val store: FirebaseFires
         try {
             notesReference.orderBy("lastChanged", Query.Direction.DESCENDING).addSnapshotListener { snapshot, e ->
                 e?.let {
+                    value = NoteResult.Error(it)
 //TODO добавить сортировку последний документ сверху - DONE
                 } ?: snapshot?.let {
                     val notes: List<Note> =
