@@ -5,12 +5,9 @@ import com.androidkotlin.mynotes.data.entity.Note
 import com.androidkotlin.mynotes.data.model.NoteResult
 import com.androidkotlin.mynotes.data.NotesRepository
 import com.androidkotlin.mynotes.ui.base.BaseViewModel
+import kotlinx.coroutines.launch
 
-class NoteViewModel(val notesRepository: NotesRepository) : BaseViewModel<NoteViewState.Data, NoteViewState>() {
-
-    init {
-        viewStateLiveData.value = NoteViewState()
-    }
+class NoteViewModel(val notesRepository: NotesRepository) : BaseViewModel<NoteData>() {
 
     private var pendingNote: Note? = null //TODO это костыль - подумать как убрать
 
@@ -18,60 +15,30 @@ class NoteViewModel(val notesRepository: NotesRepository) : BaseViewModel<NoteVi
         pendingNote = note
     }
 
-    fun loadNote(noteId: String) {
-
-//        NotesRepository.getNoteById(noteId).observeForever{result ->
-//            result ?: return@observeForever
-//            when(result){
-//                is NoteResult.Success<*> -> viewStateLiveData.value =
-//                    NoteViewState(note = result.data as? Note)
-//                is NoteResult.Error -> viewStateLiveData.value = NoteViewState(error = result.error)
-//
-//            }
-//        }
-
-//TODO убрать обзервер после использования
-
-        val noteLiveData = notesRepository.getNoteById(noteId)
-
-        val observer = object : Observer<NoteResult> {
-
-            override fun onChanged(t: NoteResult?) {
-                when (t) {
-                    is NoteResult.Success<*> -> {
-                        pendingNote = t.data as? Note
-                        viewStateLiveData.value = NoteViewState(NoteViewState.Data(note = t.data as? Note))
-                    }
-                    is NoteResult.Error -> viewStateLiveData.value =
-                        NoteViewState(error = t.error)
-                }
-                noteLiveData.removeObserver(this)
+    fun loadNote(noteId: String) = launch {
+        try {
+            notesRepository.getNoteById(noteId)?.let {
+                setData(NoteData(note = it))
             }
+        } catch (e: Throwable) {
+            setError(e)
         }
-
-        noteLiveData.observeForever(observer)
-
     }
 
     override fun onCleared() {
-        pendingNote?.let {
-            notesRepository.saveNote(it)
+        launch {
+            pendingNote?.let {
+                notesRepository.saveNote(it)
+            }
         }
     }
 
-    fun deleteNote() {
-        pendingNote?.let{
-            notesRepository.deleteNote(it.id).observeForever{ result ->
-                result ?: return@observeForever
-                pendingNote = null
-                when (result) {
-                    is NoteResult.Success<*> -> viewStateLiveData.value =
-                        NoteViewState(NoteViewState.Data(isDeleted = true))
-                    is NoteResult.Error -> viewStateLiveData.value =
-                        NoteViewState(error = result.error)
-                }
-            //TODO обзервер закрыватть подписку
-            }
+    fun deleteNote() = launch {
+        try {
+            pendingNote?.let { notesRepository.deleteNote(it.id) }
+            setData(NoteData(isDeleted = true))
+        } catch (e: Throwable) {
+            setError(e)
         }
     }
 }
