@@ -16,6 +16,7 @@ class NoteViewModel(val notesRepository: NotesRepository) : BaseViewModel<NoteDa
     fun loadNote(noteId: String) = launch {
         try {
             notesRepository.getNoteById(noteId)?.let {
+                pendingNote = it
                 setData(NoteData(note = it))
             }
         } catch (e: Throwable) {
@@ -35,6 +36,7 @@ class NoteViewModel(val notesRepository: NotesRepository) : BaseViewModel<NoteDa
         try {
             pendingNote?.let { notesRepository.deleteNote(it.id) }
             setData(NoteData(isDeleted = true))
+            pendingNote = null
         } catch (e: Throwable) {
             setError(e)
         }
