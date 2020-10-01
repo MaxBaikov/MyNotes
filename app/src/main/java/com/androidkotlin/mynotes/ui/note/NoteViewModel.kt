@@ -1,8 +1,6 @@
 package com.androidkotlin.mynotes.ui.note
 
-import androidx.lifecycle.Observer
 import com.androidkotlin.mynotes.data.entity.Note
-import com.androidkotlin.mynotes.data.model.NoteResult
 import com.androidkotlin.mynotes.data.NotesRepository
 import com.androidkotlin.mynotes.ui.base.BaseViewModel
 import kotlinx.coroutines.launch
