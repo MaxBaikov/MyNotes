@@ -1,15 +1,16 @@
 package com.androidkotlin.mynotes.data.provider
 
-import androidx.lifecycle.LiveData
+
+import kotlinx.coroutines.channels.ReceiveChannel
 import com.androidkotlin.mynotes.data.entity.Note
-import com.androidkotlin.mynotes.data.model.NoteResult
 import com.androidkotlin.mynotes.data.entity.User
+import com.androidkotlin.mynotes.data.model.NoteResult
 
 interface DataProvider {
+    fun subscribeToAllNotes() : ReceiveChannel<NoteResult>
 
-    fun getCurrentUser() : LiveData<User?>
-    fun subscribeToAllNotes() : LiveData<NoteResult>
-    fun saveNote(note: Note) : LiveData<NoteResult>
-    fun getNoteById(id: String) : LiveData<NoteResult>
-    fun deleteNote(id: String) : LiveData<NoteResult>
+    suspend fun getCurrentUser() : User?
+    suspend fun saveNote(note: Note) : Note
+    suspend fun getNoteById(id: String) : Note?
+    suspend fun deleteNote(id: String)
 }

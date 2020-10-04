@@ -4,12 +4,11 @@ package com.androidkotlin.mynotes.ui.splash
 import android.os.Handler
 import androidx.lifecycle.ViewModelProvider
 import com.androidkotlin.mynotes.ui.base.BaseActivity
-import com.androidkotlin.mynotes.ui.base.BaseViewModel
 import com.androidkotlin.mynotes.ui.main.MainActivity
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
-class SplashActivity : BaseActivity<Boolean?, SplashViewState>() {
+class SplashActivity : BaseActivity<Boolean?>() {
 
     override val viewModel: SplashViewModel by viewModel()
 
